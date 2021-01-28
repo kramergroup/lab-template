@@ -1,0 +1,68 @@
+# Relaxation runs
+
+Computed lattice constants practically *never* aggree to 100% with experimental data. They should be within a few percent of the experimental value though. Otherwise, something is seriously wrong. Regardless, the total energy is usually very sensitive towards the geometry. Hence, virtually every computational investigation starts with relaxing the structure to its minimum energy.
+
+## Prepare input
+
+We will use the static input file as a starting point to define a relaxation run where we minimise the energy with respect to lattice constants and atomic coordinates. Copy the input file from the static calculation and give it a meanuingful name:
+
+:::action Prepare input file
+```bash
+cp fix_fcc_Cu.in relax_fcc_Cu.in
+nano relax_fcc_Cu.in
+```
+:::
+
+Replace the 
+
+```lammps
+run 0
+``` 
+
+line with 
+
+```lammps
+min_style gc
+minimize 1e-15 1e-15 5000 5000
+```
+
+
+This will instruct LAMMPS to perform a minimisation run using the [Conjugate Gradient method](https://en.wikipedia.org/wiki/Conjugate_gradient_method). The `minimize` command sets convergence criteria. It will iteratively search for the energy minimum until energy and forces are converged with tight bounds (`1e-15 eV`) or stop after `5000` iterations/evaluations.
+
+If you perform a mimimisation now, not much will happen because
+
+1. A standard minimisation only changes atomic coordinates, but
+2. All atoms are in the "right" positions already.
+
+Use a `fix` to allow changes to the computational domain and add 
+
+```lammps
+fix 1 all box/relax iso 0.0 vmax 0.001
+```
+
+to the *Settings* sections.
+
+Don't forget to save the file
+
+## Submit
+
+:::action Submit the relaxation run
+```bash
+lmp < relax_fcc_Cu.i
+```
+:::
+
+## Result
+
+The result is still a bit of an anti-climax. We started out with the correct atomic coordinates and the correct lattice constants. But lets play with this a bit. You can try two things:
+
+1. Changing the lattice constant and see if the mimimiser finds the correct lattice constant
+2. Randomly change the atomic coordinates of an atom and see if it relaxes back to the correct position (use the `displace_atoms` command)
+
+:::action Lab report
+Take note of the lattice constant and atomic positions of the fully relaxed structure and report these in your lab report. What is the energy per bond for bulk Cu?
+:::
+
+:::info Congratulations
+This is all you need to know to start doing some computational investigations. On the next sides, you will find a number of task and some hints what would work well in a lab report. But feel free to explore and experiment.
+:::

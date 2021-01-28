@@ -57,6 +57,7 @@ annotation {
   border-collapse: collapse;
   border-spacing: 0;
 }
+
 .guide th {
   border-top: solid 1px;
   border-bottom: solid 1px;
@@ -80,6 +81,10 @@ annotation {
 
 .guide td:last-of-type, .guide th:last-of-type {
   padding-right: 1em;
+}
+
+.guide img {
+  width: 100%;
 }
 
 /* Reduce font size for math */
@@ -114,6 +119,10 @@ annotation {
 
 .remark-container > ol {
   margin-left: 0px !important;
+}
+
+.remark-container > p:last-of-type {
+  margin-bottom: 1ex;
 }
 
 .remark-container.info {
@@ -173,7 +182,7 @@ annotation {
 }
 
 
-.remark-container.action {
+.remark-container.action,.remark-container.image {
   padding: 1ex;
   background: #eee;
 }
@@ -183,15 +192,16 @@ annotation {
   margin-right: 0.75em;
 }
 
-.remark-container > p:last-of-type {
-  margin-bottom: 1ex;
-}
-
-.remark-container > p:first-of-type::before {
+.remark-container.action > p:first-of-type::before {
   font-family: "Font Awesome 5 Pro";
   font-weight: 900;
   content: "\f11c";
   margin-right: 1ex;
+}
+
+.remark-container.image > :not(table,img) {
+  margin-left: 0.5em;
+  margin-right: 0.5em;
 }
 
 .player-area {

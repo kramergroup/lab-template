@@ -1,0 +1,56 @@
+# (001) Surface energy
+
+The surface energy is defined by
+
+$$
+\gamma = \frac{1}{2A}\left(E_{\rm slab} - E_{\rm bulk}\right)
+$$
+
+It is the difference between the energy of a slab and an *equivalent* number of bulk atoms divided by the total surface area of the slab.
+
+Calculate the surface energy of Cu(001) surfaces. A possible approach:
+
+1. Start with the initial bulk structure and create a sufficiently big supercell to encompass the slab (say 1x1x10)
+2. Fully relax the bulk supercell structure
+3. Make calculation in the z direction non-periodic and add some vacuum on both sides of the slab
+4. Relax the atomic coordinates
+
+You can do both in one calculation or use the `restart` feature in LAMMPS. You can than directly compare the total energies to obtain the cleavage and surface energies.
+
+The `replicate` command can be very useful to create slabs and other geometries. It replicates the existing unit cell in each direction
+
+```lammps
+replicate 1 1 10
+```
+
+will create a unit cell that is 10-times in the z-direction.
+
+You should also account for the possiblity of atoms moving outside the simulation box. If this happens across a periodic boundary, the atom is just reintroduced on the other side. **But atoms are lost if they cross fixed, non-periodic boundaries**. You can add additional space to a simulation with the `change_box` command.
+
+For example, The following command will change the z-dimension of the simulation box to stretch from -1 to 15 (times the lattice spacing) and adjust the boundary condition type to `fixed` for the z-direction:
+
+```lammps
+change_box all z final -1 15 boundary p p f 
+```
+
+:::image Screenshof of Ovito
+![Ovito visualiation](/images/ovito_vis_add_modification.png)
+:::
+
+You can visualise the result with [Ovito](https://www.ovito.org/) if you install it locally on your computer. Unfortortunately, graphical software cannot be used easily on the cluster terminal.
+
+
+> Ovito is also very useful to investige variables associated with atoms (such as the centro-symmetry to investigate coordination). You can visualise atom-based variables by clicking on `Add Modification` on the right-hand side and choosing `Color coding`.
+
+:::action Lab report
+You should perform some convergence studies:
+
+1. What slab thickness is needed to converge the surface energy?
+2. Does the surface energy change when making the slabs bigger orthogonal to the surface?
+
+Your report should contain the convergence study as well as an analysis of the surface relaxation and a discussion.
+
+- How much and in which direction do the surface atoms relax?
+- Can you relate the cohesive (or bulk bond energy) to the surface energy? Would you expect a larger or smaller energy based on the coordination loss at the surface?
+- You could also compare your result with literature data (experimental and theoretical).
+:::

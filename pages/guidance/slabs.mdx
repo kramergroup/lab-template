@@ -1,0 +1,12 @@
+# 2D slab geometries
+
+LAMMPS provides a `slab` keyword, which allows to solve systems that are periodic in a,b and non-periodic in c. 
+
+Some force fields use efficient algorithms operating in `k`-space (reciprocal space) to calculate long-range order. If these are used, LAMMPS still operates as if the third dimension is periodic for these parts of the calculation. The `k`-space, therefore, needs to be modified and artificial vacuum added to avoid spurious interactions between images.
+
+```lammps[343]
+boundary        p p f
+kspace_modify   slab 3.0
+```
+
+This defines a geometry where the z direction is non-periodic and adds vacuum in `k`-space that is three times as big as the slab. The `kspace_modify` command is not needed if no `kspace_style` has been defined.

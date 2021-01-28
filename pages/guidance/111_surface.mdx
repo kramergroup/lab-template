@@ -1,0 +1,49 @@
+# (111) Surface
+
+Next, we will investigate the (111) surface of Cu. To do that, we need to orient the unit cell along the \[111\] direction and also make sure that it remains rectangular.
+
+## Alignment of unit cell
+
+:::image Transformation of fcc unitcell to align c-axis with (111) plane
+![Cu (111) unitcell transform](/images/Cu_111_unitcell_transform.png)
+:::
+
+ A suitable transformation matrix that aligns the c-axis along \[111\] is:
+
+$$
+{\bf T}=\left[\begin{array}{ccc}
+     1 & -1 & 1 \\
+     0 & 2 & 1 \\
+     -1 & -1 & 1
+  \end{array}\right]
+$$
+
+:::action Relax bulk unit cell
+Create a **bulk** unit cell accordingly and relax it.
+:::
+
+Open the `dump.relax.1` file with Ovito. Ovito will automatically load all dumped timesteps and you can use the slider at the bottom to go forward and backward. 
+
+It is likely that things went wrong. What is the issue? The axis are orthogonal and c stand orthogonal on the (111) surface. However, if you used 
+
+```lammps
+region		    simbox block 0 1 0 1 0 1
+``` 
+
+to define the simulation region and unit cell, you will end up with a cell that has the wrong length in the y-direction. That means that periodicity in this direction is not correct. If you let this relax, the cell will initially blow up and then create so much stress when relaxing back inwards that the crystal symmetry is destroyed. 
+
+> Why LAMMPS calculates the correct lattice length in the x- and z-directions, but not in the y-direction is unclear; it could be a bug! In any case, it highlights that you should always confirm that the code actually does what you expect it to do. 
+
+You can fix the y-direction by extending the lattice vector by 50% in the y-direction:
+
+```lammps
+region		    simbox block 0 1 0 1.5 0 1
+```
+
+If you relax the unit cell now, it should give you a stable bulk structure after one or two iterations. You can confirm this again using `ovito`.
+
+You can now cut a slab by extending the cell in the z-direction and remove periodicity.
+
+:::action Lab Report
+Compute the (111) surface energy and contrast it with your result for the (001) surface. Can you provide an explanation for your result?
+:::

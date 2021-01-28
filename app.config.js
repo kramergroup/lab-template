@@ -4,7 +4,15 @@
 
 /* Content components */
 import Welcome from './pages/guidance/welcome.mdx';
-
+import PairStyles from './pages/guidance/pairstyles.mdx';
+import Slabs from './pages/guidance/slabs.mdx';
+import Walkthrough from './pages/guidance/walkthrough.mdx';
+import FirstCalculation from './pages/guidance/firstcalculation.mdx';
+import Relaxations from './pages/guidance/relaxations.mdx';
+import Scaling from './pages/guidance/scaling.mdx';
+import SurfaceA from './pages/guidance/001_surface.mdx';
+import SurfaceB from './pages/guidance/111_surface.mdx';
+import End from './pages/guidance/end.mdx';
 
 export default {
   
@@ -17,7 +25,16 @@ export default {
   institution: "Helmut-Schmidt-University Hamburg",
   basePath: "/lab2",
   steps: [
-    Welcome
+    Welcome,
+    PairStyles,
+    Slabs,
+    Walkthrough,
+    FirstCalculation,
+    Relaxations,
+    Scaling,
+    SurfaceA,
+    SurfaceB,
+    End
   ],
   videos: {
   }
