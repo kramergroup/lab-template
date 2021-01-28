@@ -1,0 +1,27 @@
+{
+  "name": "lab-hpc-env",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.34",
+    "@fortawesome/free-solid-svg-icons": "^5.15.2",
+    "@fortawesome/react-fontawesome": "^0.1.14",
+    "@material-ui/core": "^4.11.2",
+    "@material-ui/icons": "^4.11.2",
+    "@mdx-js/loader": "^1.6.22",
+    "@mdx-js/react": "^1.6.22",
+    "@next/mdx": "^10.0.5",
+    "next": "10.0.5",
+    "prism-react-renderer": "^1.1.1",
+    "react": "17.0.1",
+    "react-dom": "17.0.1",
+    "rehype-katex": "^4.0.0",
+    "remark-container": "^0.1.2",
+    "remark-math": "^3.0.0"
+  }
+}

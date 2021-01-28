@@ -1,0 +1,216 @@
+:root {
+  --main-bg-color: white;
+  --main-fg-color: black;
+  --main-hl-color: #B88114;
+  --high-hl-color: #F4A810;
+  --dark-hl-color: #342609;
+  --main-cm-color: #3248B3;
+  --high-cm-color: #B6C0F2;
+  --main-qt-color: #AAA;
+  --main-al-color: #8A0202;
+}
+
+html, body {
+  padding: 0;
+  margin: 0;
+  font-family: 'Baloo Thambi 2', cursive;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+code {
+  color: var(--main-hl-color);
+  font-size: 1.1em;
+  background: #EEE;
+  padding-left: 0.4ex;
+  padding-right: 0.4ex;
+  border: #CCC solid 1px;
+  border-radius: 2pt;
+}
+
+blockquote {
+  color: var(--main-qt-color);
+  border-left: var( --main-hl-color) solid 2px;
+  padding-left: 1em;
+  margin-left: 0em;
+}
+
+a {
+  color: var(--main-hl-color);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--high-hl-color);
+}
+
+/* Annotation is used by KaTeX for setting math. This should not be rendered */
+annotation { 
+  display: none;
+}
+
+.guide table {
+  margin-left: auto;
+  margin-right: auto;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+.guide th {
+  border-top: solid 1px;
+  border-bottom: solid 1px;
+  padding: 0.5ex;
+  border-left: 0;
+  border-right: 0;
+  text-align: left;
+}
+
+.guide td {
+  padding: 0.5ex;
+}
+
+.guide tr:last-of-type td {
+  border-bottom: solid 1px;
+}
+
+.guide td:first-of-type, .guide th:first-of-type {
+  padding-left: 1em;
+}
+
+.guide td:last-of-type, .guide th:last-of-type {
+  padding-right: 1em;
+}
+
+/* Reduce font size for math */
+.katex {
+  font-size: 1em !important;
+}
+
+/* Container Styles ------------------------------------------------ */
+
+.remark-container {
+  border-radius: 5px;
+  padding: 1ex;
+  margin-top: 1ex;
+  margin-bottom: 1ex;
+}
+
+.remark-container > p.remark-container-title {
+  margin-top: 0px;
+  margin-left: 0px;
+  font-weight: 900;
+}
+
+.remark-container > p:last-of-type {
+  margin-bottom: 0px;
+}
+
+.remark-container > p {
+  margin-top: 1ex;
+  margin-bottom: 1ex;
+  margin-left: 1.5em;
+}
+
+.remark-container > ol {
+  margin-left: 0px !important;
+}
+
+.remark-container.info {
+  background: var(--main-cm-color);
+  color:var(--main-bg-color);
+  box-shadow: 2px 2px rgba(0, 0, 0, 0.2);
+}
+
+.remark-container.info a {
+  color: var(--high-hl-color);
+}
+
+.remark-container.info a:hover {
+  color: var(--high-cm-color);
+}
+
+.remark-container.info > p.remark-container-title::before {
+  font-family: "Font Awesome 5 Pro";
+  font-weight: 900;
+  content: "\f05a";
+  margin-right: 1ex;
+}
+
+.remark-container.tip  a {
+  color: var(--main-cm-color) !important;
+}
+
+.remark-container.tip  a:hover {
+  color: var(--high-cm-color) !important;
+}
+
+.remark-container.tip {
+  background: var(--main-hl-color);
+  color: white;
+  box-shadow: 2px 2px rgba(0, 0, 0, 0.2);
+}
+
+.remark-container.tip > p.remark-container-title::before {
+  font-family: "Font Awesome 5 Pro";
+  font-weight: 900;
+  content: "\f0a4";
+  margin-right: 1ex;
+}
+
+.remark-container.warn {
+  background: var(--main-al-color);
+  color: var(--main-bg-color);
+  box-shadow: 2px 2px rgba(0, 0, 0, 0.2);
+}
+
+
+.remark-container.warn p.remark-container-title::before {
+  font-family: "Font Awesome 5 Pro";
+   content: "\f071";
+   display: inline-block;
+   margin-right: 1ex;
+}
+
+
+.remark-container.action {
+  padding: 1ex;
+  background: #eee;
+}
+
+.remark-container.action > * {
+  margin-left: 1.5em;
+  margin-right: 0.75em;
+}
+
+.remark-container > p:last-of-type {
+  margin-bottom: 1ex;
+}
+
+.remark-container > p:first-of-type::before {
+  font-family: "Font Awesome 5 Pro";
+  font-weight: 900;
+  content: "\f11c";
+  margin-right: 1ex;
+}
+
+.player-area {
+  /* width is set as 100% here. any width can be specified as per requirement */
+  width: 100%;
+  padding-top: 56.25%;
+  height: 0px;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 1em;
+  margin-top: 1em;
+}
+
+.player-area video {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  outline: none;
+}
