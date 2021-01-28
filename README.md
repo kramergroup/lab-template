@@ -24,7 +24,7 @@ yarn dev
 
 Open [http://localhost:3000/lab](http://localhost:3000/lab) with your browser to see the result.
 
-> Note that the lab compiles to static content and can be hosted on s3 etc. The route to access the lab changes in such scenarios to http://<server>/lab.html
+> Note that the lab compiles to static content and can be hosted on s3 etc. The route to access the lab changes in such scenarios to http://server-url/lab.html
 
 You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
 
