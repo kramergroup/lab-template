@@ -152,15 +152,29 @@ class GuidePane extends Component {
 
   }
 
-  NavigationBar({currentStep,numSteps}) {
+  NavigationBar({current,numSteps}) {
 
     if (numSteps > 0) {
       return (
         <div className="navigation">
           <this.BackButton/>
-          <Progress total={numSteps} current={currentStep}/>
+            <Progress total={numSteps} current={current}/>
           <this.NextButton/>
+
+          <style jsx>{`
+          .navigation {
+            flex-grow: 0;
+            flex-shrink: 0;
+            display: grid;
+            grid-template-columns: 100px auto 100px;
+            margin-top: 1em;
+            background: white;
+            border-top: solid 1px #DDD;
+          }
+        `}</style>
         </div>
+
+
       );
     } else {
       return(
@@ -184,9 +198,6 @@ class GuidePane extends Component {
         </Head>
 
         <MDXProvider components={components}>
-          {/* <div className="content" ref={guideDivRef}>
-            <this.CurrentStep/>
-          </div> */}
           <this.guideContainer current={this.state.currentStep}>
             <this.CurrentStep/>
           </this.guideContainer>
@@ -202,21 +213,6 @@ class GuidePane extends Component {
             height: 100vh;
             font-family: 'Baloo Thambi 2', cursive;
           }
-          
-          .navigation {
-            flex-grow: 0;
-            flex-shrink: 0;
-            display: grid;
-            grid-template-columns: 100px auto 100px;
-            margin-top: 1em;
-            background: white;
-            border-top: solid 1px #DDD;
-          }
-        `}</style>
-
-        <style jsx global>{`
-          
-          
         `}</style>
 
       </div>
