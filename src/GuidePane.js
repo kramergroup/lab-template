@@ -173,12 +173,10 @@ class GuidePane extends Component {
           }
         `}</style>
         </div>
-
-
       );
     } else {
       return(
-        <div style="display: hidden"/>
+        <div style={{display: "hidden"}}/>
       );
     }
 
