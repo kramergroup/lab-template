@@ -141,6 +141,7 @@ class GuidePane extends Component {
           flex-grow: 10;
           flex-shrink: 10;
           overflow: scroll;
+          overflow-x: hidden;
           padding-left: 1em;
           padding-right: 1em;
         }
