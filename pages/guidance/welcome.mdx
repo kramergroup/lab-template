@@ -10,62 +10,19 @@ Chances are, if you see this page, you have already successfully started the sam
 docker-compose up
 ```
 
-## Features
+You can then point your browser at 
 
-You write your guidance using [Markdown](https://daringfireball.net/projects/markdown/) with some additional features configured as well:
+```http
+http://localhost:3030
+```
 
-- Support for LaTeX math mode
-- Pre-formated remark container
-
-### LaTeX Support
-
-You can render LaTeX math directly within your page. For instance,
+to test the production build. You can also start the development server, which updates content as you code, with
 
 ```bash
-$$ 
-f(x) = \sin(x) 
-$$
+yarn dev
 ```
 
-will render to 
-
-$$ 
-f(x) = \sin(x)
-$$
-
-and inline math such as $\sqrt{x + 3}$ is set with
-
-```bash
-$\sqrt{x + 3}$
-```
-
-### Remark container
-
-You can use a small number of remark container to emphasise something. Pre-defined container environments are
-
-| Tag      | Purpose                                       |
-| -------- | --------------------------------------------- |
-| `info`   | Some further info                             |
-| `tip`    | A useful tip                                  |
-| `action` | An action that you expect the user to perform |
-| `warn`   | A warning about something                     |
-| `image`  | To emphasise images and provide label places  |
-
-Container environments are created with the custom `:::` symbol (that is not part of Markdown).
-
-```markdown
-:::tip Custom container
-You can define your own container environments using 
-the global css file (`/styles/global.css`). Styling 
-for a custom container environment `myenv` uses the 
-`.remark-container.myenv` CSS selector.
-:::
-```
-
-:::tip Custom container
-You can define your own container environments using the global css file (`/styles/global.css`). Styling for a custom container environment `myenv` uses the `.remark-container.myenv` CSS selector.
+:::info Backend during development
+As long as you have the docker-compose environment up, your development environment should even be able to access the backend.
 :::
 
-:::action Get going
-Start building your own tutorial by creating a new guide pane in `/pages/guidance`.
-:::

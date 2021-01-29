@@ -4,6 +4,7 @@
 
 /* Content components */
 import Welcome from './pages/guidance/welcome.mdx';
+import Features from './pages/guidance/features.mdx';
 
 export default {
   
@@ -19,6 +20,7 @@ export default {
   // Add new steps here after importing them
   steps: [
     Welcome,
+    Features
   ],
 
 }
