@@ -154,7 +154,7 @@ class GuidePane extends Component {
 
   NavigationBar({current,numSteps}) {
 
-    if (numSteps > 0) {
+    if (numSteps > 1) {
       return (
         <div className="navigation">
           <this.BackButton/>

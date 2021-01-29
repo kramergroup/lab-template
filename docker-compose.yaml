@@ -1,0 +1,56 @@
+version: "3.9"  # optional since v1.27.0
+services:
+
+  web:
+    build:
+      context: .
+      dockerfile: ./docker/web/Dockerfile
+    ports:
+      - "3000:3000"
+    links:
+      - wetty
+    depends_on:
+      - wetty
+
+  backend:
+    build:
+      context: ./docker/backend
+      args:
+        - UID=1000
+        - GID=1000
+    volumes:
+      - certs:/home/backend/.ssh
+    depends_on:
+      - bootstrap
+    command: tail -f /dev/null
+
+  bootstrap:
+    image: kagux/ssh-keygen
+    environment:
+      - UID=1000
+      - GID=1000
+      - KEYS_PATH=/etc/certs
+    volumes:
+      - certs:/etc/certs
+    command: 
+      - /bin/sh
+      - -c
+      - /opt/keygen.sh && cat /etc/certs/id_rsa.pub >> /etc/certs/authorized_keys
+
+  wetty:
+    image: wettyoss/wetty
+    ports:
+      - "10000:10000"
+    volumes:
+      - certs:/etc/certs
+    depends_on:
+      - bootstrap
+      - backend
+    links: 
+      - backend
+    command: --ssh-host=backend --ssh-key=/etc/certs/id_rsa --ssh-user=backend --ssh-auth=publickey --allow-iframe --port 10000
+  
+
+
+volumes:
+  certs: {}

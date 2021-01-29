@@ -12,7 +12,13 @@ This is a template to quickly create go-along tutorials. The site generates a st
 
 ## Sample environment
 
-For demonstation purposes, this repository provides a docker-compose environment with a simple terminal backend. The environment consists of three containers:
+For demonstation purposes, this repository provides a docker-compose environment with a simple terminal backend:
+
+```bash
+docker-compose up
+```
+
+The environment consists of three containers:
 
 | Container | Ports | Purpose                                                                                  |
 | --------- | ----- | ---------------------------------------------------------------------------------------- |

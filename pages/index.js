@@ -24,7 +24,7 @@ export default function Home() {
         </div>
         
         <div className="navigation">
-          <Link href={config.basePath + config.basePath}> 
+          <Link href={config.basePath + config.entryPoint}> 
             <Button variant="contained" color="primary">
                 Getting Started
             </Button>
