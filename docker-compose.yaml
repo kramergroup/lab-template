@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: ./docker/web/Dockerfile
     ports:
-      - "3000:3030"
+      - "3030:3000"
     links:
       - wetty
     depends_on:
