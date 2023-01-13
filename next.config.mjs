@@ -15,11 +15,13 @@ import mdx from '@next/mdx'
 import rehypeKatex from 'rehype-katex'
 import remarkMath from 'remark-math'
 import remarkGfm from 'remark-gfm'
+import remarkDirective from 'remark-directive'
+import remarkAdmonition from './src/remarkAdmonition.mjs'
 
 const withMDX = mdx({
   extension: /\.mdx?$/,
   options: {
-    remarkPlugins: [remarkGfm, remarkMath],
+    remarkPlugins: [remarkGfm, remarkMath, remarkDirective, remarkAdmonition],
     rehypePlugins: [rehypeKatex]
   }
 })

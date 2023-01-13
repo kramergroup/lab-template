@@ -144,6 +144,7 @@ annotation {
   font-weight: 900;
   content: "\f05a";
   margin-right: 1ex;
+  vertical-align: -5%;
 }
 
 .remark-container.tip  a {
@@ -165,6 +166,7 @@ annotation {
   font-weight: 900;
   content: "\f0a4";
   margin-right: 1ex;
+  vertical-align: -5%;
 }
 
 .remark-container.warn {
@@ -179,6 +181,7 @@ annotation {
    content: "\f071";
    display: inline-block;
    margin-right: 1ex;
+   vertical-align: -5%;
 }
 
 
@@ -192,11 +195,12 @@ annotation {
   margin-right: 0.75em;
 }
 
-.remark-container.action > p:first-of-type::before {
+.remark-container.action > p.remark-container-title::before {
   font-family: "Font Awesome 5 Pro";
   font-weight: 900;
   content: "\f11c";
   margin-right: 1ex;
+  vertical-align: -5%;
 }
 
 .remark-container.image > :not(table,img) {

@@ -23,7 +23,7 @@ interface GuideContainerProps {
 
 const components = {
   //pre: props => <pre {...props} />,
-  code: props => <CodeBlock {...props} />
+  code: props => <CodeBlock {...props} />,
 }
 
 
