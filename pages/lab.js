@@ -1,4 +1,3 @@
-import Head from 'next/head';
 import { Component } from 'react';
 
 import SplitView from '../src/SplitView';
@@ -19,12 +18,6 @@ class Lab extends Component {
     return (
       <div className="container">
 
-        <Head>
-          <title>{config.title}</title>
-          <link rel="icon" href="/favicon.ico" />
-          <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Baloo+Thambi+2&display=swap" />
-        </Head>
-          
         <SplitView backend={config.backendURL}>
           <Welcome/>
           <Features/>
