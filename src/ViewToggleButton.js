@@ -1,7 +1,7 @@
-import AddIcon from '@material-ui/icons/Add';
-import RemoveIcon from '@material-ui/icons/Remove';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 
-import Fab from '@material-ui/core/Fab';
+import Fab from '@mui/material/Fab';
 
 
 const Icon = (props) => {

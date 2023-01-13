@@ -7,6 +7,16 @@ class Progress extends Component {
 
   constructor(props) {
     super(props);
+
+    this.HandleClick = this.HandleClick.bind(this);
+    this.Dots = this.Dots.bind(this);
+
+  }
+
+  HandleClick(n) {
+
+    if (this.props.onClick) this.props.onClick(n)
+
   }
 
   Dots(props) {
@@ -15,7 +25,7 @@ class Progress extends Component {
 
       const cl = (n == props.active) ? "indicator active" : "indicator";
       dots.push(
-        <div className={cl} key={n}>
+        <div className={cl} key={n} onClick={() => this.HandleClick(n)}>
           <FontAwesomeIcon icon={faCircle} />
           <style jsx>{`
             .indicator {

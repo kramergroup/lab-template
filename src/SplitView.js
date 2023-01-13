@@ -1,4 +1,4 @@
-import GuidePane from './GuidePane';
+import GuidePane from './GuidePane2';
 import { Component } from 'react';
 
 import ToggleViewButton from './ViewToggleButton'
@@ -15,10 +15,12 @@ class SplitView extends Component {
     return <main>
       <ToggleViewButton splitView={this.state.splitView} onClick={this.toggleView}/>
       <div className="workspace">
-        <iframe src={this.props.backend} id="workspace" />
+        {/* <iframe src={this.props.backend} id="workspace" /> */}
       </div>
       <div className="guide" style={{display: this.state.splitView ? 'block' : 'none' }}>
-        <GuidePane steps={this.props.steps}/>
+        <GuidePane>
+          {this.props.children}
+        </GuidePane>
       </div>
 
       <style jsx>{`

@@ -5,14 +5,21 @@ const isProd = process.env.NODE_ENV === 'production'
 /*
  * Configure MDX for Markdown pages
  */
-const remarkContainer = require('remark-container')
-const remarkMath = require('remark-math')
-const rehypeKatex = require('rehype-katex')
+//const remarkContainer = require('remark-container')
+// const remarkMath = import('remark-math')
+// const rehypeKatex = require('rehype-katex')
 
-const withMDX = require('@next/mdx')({
+import mdx from '@next/mdx'
+
+
+import rehypeKatex from 'rehype-katex'
+import remarkMath from 'remark-math'
+import remarkGfm from 'remark-gfm'
+
+const withMDX = mdx({
   extension: /\.mdx?$/,
   options: {
-    remarkPlugins: [remarkMath,remarkContainer],
+    remarkPlugins: [remarkGfm, remarkMath],
     rehypePlugins: [rehypeKatex]
   }
 })
@@ -48,7 +55,8 @@ function getBasePath() {
 //   },
 // })
 
-module.exports = withMDX({
+export default  withMDX({
+    pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
     assetPrefix: getBasePath(),
     publicRuntimeConfig: {
       basePath: getBasePath(),

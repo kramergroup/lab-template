@@ -4,7 +4,8 @@ import { Component } from 'react';
 import SplitView from '../src/SplitView';
 
 import config from '../app.config';  
-
+import Welcome from './guidance/welcome.mdx';
+import Features from './guidance/features.mdx';
 class Lab extends Component {
 
   constructor(props) {
@@ -24,7 +25,11 @@ class Lab extends Component {
           <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Baloo+Thambi+2&display=swap" />
         </Head>
           
-        <SplitView steps={config.steps} backend={config.backendURL}/>
+        <SplitView backend={config.backendURL}>
+          <Welcome/>
+          <Features/>
+        </SplitView>
+
       </div>
       
     );

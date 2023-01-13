@@ -3,8 +3,7 @@
 */
 
 /* Content components */
-import Welcome from './pages/guidance/welcome.mdx';
-import Features from './pages/guidance/features.mdx';
+
 
 export default {
   
@@ -17,10 +16,4 @@ export default {
   basePath: "",           // use this to configure basepaths for deployment
   entryPoint: "/lab",     // This is the URL for the lab (you need to change this for static deployments to lab.html)
   
-  // Add new steps here after importing them
-  steps: [
-    Welcome,
-    Features
-  ],
-
 }
