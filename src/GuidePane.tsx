@@ -119,7 +119,7 @@ function GuidePane({children} : GuidePaneProps) {
     <div className="guide">
 
       <MDXProvider components={components}>
-        <GuideContainer>{children[currentStep]}</GuideContainer>
+        <GuideContainer>{Array.isArray(children) ? children[currentStep] : children}</GuideContainer>
       </MDXProvider>
       <NavigationBar current={currentStep} total={Array.isArray(children) ? children.length : 0}/>
 
