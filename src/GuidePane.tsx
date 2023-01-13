@@ -1,13 +1,11 @@
 
-import { useState, useEffect, useRef,FC, ReactNode } from 'react'
+import { useState, FC, ReactNode } from 'react'
 import Head from 'next/head';
 
 import { Button } from "@mui/material";
 
 import Progress from './Progress'
 import { MDXProvider } from '@mdx-js/react';
-
-import dynamic from 'next/dynamic'
 
 import CodeBlock from './CodeBlock'
 

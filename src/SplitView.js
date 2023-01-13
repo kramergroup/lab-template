@@ -1,4 +1,4 @@
-import GuidePane from './GuidePane2';
+import GuidePane from './GuidePane';
 import { Component } from 'react';
 
 import ToggleViewButton from './ViewToggleButton'
