@@ -4,11 +4,11 @@ export default function remarkAdmonition() {
   return (tree) => {
     visit(tree, (node) => {
       if (
-        node.type === "textDirective" ||
-        node.type === "leafDirective" ||
+        // node.type === "textDirective" ||
+        // node.type === "leafDirective" ||
         node.type === "containerDirective"
       ) {
-        if (!["info", "warn", "action", "tip"].includes(node.name)) return
+        // if (!["info", "warn", "action", "tip"].includes(node.name)) return
 
         const data = node.data || (node.data = {})
         const tagName = node.type === "textDirective" ? "span" : "div"
