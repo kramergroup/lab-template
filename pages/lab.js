@@ -21,8 +21,8 @@ class Lab extends Component {
 
         <SplitView backend={config.backendURL}>
           <Test/>
-          {/* <Welcome/>
-          <Features/> */}
+          <Welcome/>
+          <Features/>
         </SplitView>
 
       </div>
