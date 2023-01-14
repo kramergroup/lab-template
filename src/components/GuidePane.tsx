@@ -9,6 +9,7 @@ import { MDXProvider } from '@mdx-js/react';
 import CodeBlock from './CodeBlock'
 import { useLocalStorage } from '../util/useLocalStorage';
 
+import Admonition from './Admonition';
 interface GuidePaneProps {
   children?: ReactNode[]
 }
@@ -25,6 +26,7 @@ interface GuideContainerProps {
 const components = {
   //pre: props => <pre {...props} />,
   code: props => <CodeBlock {...props} />,
+  Admonition: Admonition,
 }
 
 

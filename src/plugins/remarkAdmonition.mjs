@@ -1,24 +1,28 @@
 import { visit } from "unist-util-visit"
 
+/* NOTE: Make sure to sync the styles in '../components/AdmonitionStyles.ts' */
+export const admonitionTypes = ["warn", "info", "action", "tip" ]
+
 export default function remarkAdmonition() {
   return (tree) => {
     visit(tree, (node) => {
       if (
-        // node.type === "textDirective" ||
-        // node.type === "leafDirective" ||
         node.type === "containerDirective"
       ) {
-        // if (!["info", "warn", "action", "tip"].includes(node.name)) return
+        if (!admonitionTypes.includes(node.name)) return
 
-        const data = node.data || (node.data = {})
-        const tagName = node.type === "textDirective" ? "span" : "div"
+        const status = node.name
+        
+        node.type = "mdxJsxFlowElement"
+        node.name = "Admonition"
+        node.attributes = [
+          { type: "mdxJsxAttribute", name: "status", value: status },
+        ]
 
-        data.hName = tagName
-        data.hProperties = {class: [node.name,"remark-container"]}
-
-        node.children.map((c) =>{
-          if (c.data && c.data.directiveLabel) c.data.hProperties = {class: [node.name,"remark-container-title"]}
-        });
+        const title = node.children && node.children.find( (c) => c.data && c.data.directiveLabel )
+        if (title) {
+          title.data.hProperties = {...title.data.hProperties, title: "true"}
+        }
       }
     })
   }

@@ -11,7 +11,6 @@ const isProd = process.env.NODE_ENV === 'production'
 
 import mdx from '@next/mdx'
 
-
 import rehypeKatex from 'rehype-katex'
 import remarkMath from 'remark-math'
 import remarkGfm from 'remark-gfm'
@@ -49,14 +48,6 @@ function getBasePath() {
 
   return basePath
 }
-
-// module.exports = withMDX({
-//   pageExtensions: ['js', 'jsx', 'mdx', 'md'],
-//   assetPrefix: getBasePath(),
-//   publicRuntimeConfig: {
-//     basePath: getBasePath(),
-//   },
-// })
 
 export default  withMDX({
     pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
