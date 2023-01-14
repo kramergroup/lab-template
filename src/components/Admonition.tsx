@@ -124,6 +124,11 @@ export default function Admonition({ status = "info", children }: Props) {
           margin-bottom: 1ex;
           margin-left: 1.5em;
         }
+
+        .container > :global(pre) {
+          margin-left: 1.5em;
+          margin-right: 0.75em;
+        }
         
         .container > :global(ol) {
           margin-left: 0px !important;
