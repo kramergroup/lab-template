@@ -1,5 +1,5 @@
 
-import { useState, FC, ReactNode } from 'react'
+import { FC, ReactNode } from 'react'
 
 import { Button } from "@mui/material";
 
@@ -7,6 +7,7 @@ import Progress from './Progress'
 import { MDXProvider } from '@mdx-js/react';
 
 import CodeBlock from './CodeBlock'
+import { useLocalStorage } from './useLocalStorage';
 
 interface GuidePaneProps {
   children?: ReactNode[]
@@ -29,7 +30,7 @@ const components = {
 
 function GuidePane({children} : GuidePaneProps) {
 
-  const [currentStep, setCurrentStep] = useState(0)
+  const [currentStep, setCurrentStep] = useLocalStorage<number>('current-step',0)
   
   /* guideContainer creates a div that scrolls to the top if the 
      current step changes
