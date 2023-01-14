@@ -7,7 +7,7 @@ import Progress from './Progress'
 import { MDXProvider } from '@mdx-js/react';
 
 import CodeBlock from './CodeBlock'
-import { useLocalStorage } from './useLocalStorage';
+import { useLocalStorage } from '../util/useLocalStorage';
 
 interface GuidePaneProps {
   children?: ReactNode[]

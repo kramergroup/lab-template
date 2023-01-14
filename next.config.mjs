@@ -16,13 +16,14 @@ import rehypeKatex from 'rehype-katex'
 import remarkMath from 'remark-math'
 import remarkGfm from 'remark-gfm'
 import remarkDirective from 'remark-directive'
-import remarkAdmonition from './src/remarkAdmonition.mjs'
+import remarkAdmonition from './src/plugins/remarkAdmonition.mjs'
 
 const withMDX = mdx({
   extension: /\.mdx?$/,
   options: {
     remarkPlugins: [remarkGfm, remarkMath, remarkDirective, remarkAdmonition],
-    rehypePlugins: [rehypeKatex]
+    rehypePlugins: [rehypeKatex],
+    providerImportSource: "@mdx-js/react",
   }
 })
 

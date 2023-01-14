@@ -1,6 +1,6 @@
 import { Component } from 'react';
 
-import SplitView from '../src/SplitView';
+import SplitView from '../src/components/SplitView';
 
 import config from '../app.config';  
 import Welcome from './guidance/welcome.mdx';
