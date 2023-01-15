@@ -7,7 +7,8 @@
 
 export default {
   
-  backendURL: "http://localhost:10000/wetty", 
+  backendType: "wetty",
+  backendURL: "https://assets.kramer.science/compdes/wetty", 
 
   title: "Go-along tutorial template",
   greeting: "Welcome to My tutorial",
