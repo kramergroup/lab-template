@@ -43,15 +43,16 @@ Container environments are created with the custom `:::` symbol (that is not par
 
 ```markdown
 :::tip[Custom container]
-You can define your own container environments using 
-the global css file (`/styles/global.css`). Styling 
-for a custom container environment `myenv` uses the 
-`.remark-container.myenv` CSS selector.
+You can define your own container environments 
+in (`/src/components/AdmontionStyles.ts`). Make 
+sure to also update `/src/plugins/remarkAdmonition.mjs` 
+to ensure that your environments are recognised.
 :::
 ```
 
 :::tip[Custom container]
-You can define your own container environments using the global css file (`/styles/global.css`). Styling for a custom container environment `myenv` uses the `.remark-container.myenv` CSS selector.
+You can define your own container environments in (`/src/components/AdmontionStyles.ts`). Make sure to also 
+update `/src/plugins/remarkAdmonition.mjs` to ensure that your environments are recognised.
 :::
 
 :::action[Get going]
