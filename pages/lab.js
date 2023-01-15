@@ -6,6 +6,7 @@ import config from '../app.config';
 import Welcome from './guidance/welcome.mdx';
 import Features from './guidance/features.mdx';
 import Test from './guidance/test.mdx';
+import Backends from './guidance/backends.mdx'
 class Lab extends Component {
 
   constructor(props) {
@@ -23,6 +24,7 @@ class Lab extends Component {
           <Test/>
           <Welcome/>
           <Features/>
+          <Backends/>
         </SplitView>
 
       </div>

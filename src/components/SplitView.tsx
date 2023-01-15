@@ -57,7 +57,7 @@ export default function SplitView( {children, backendType, backendURL, showGuida
       <Backend/>
     </div>
     <Guide/>
-    
+
     <style jsx>{`
       main {
         display: flex;
@@ -65,15 +65,6 @@ export default function SplitView( {children, backendType, backendURL, showGuida
         width: 100vw;
         height: 100vh;
         position: absolute;
-      }
-      .guide {
-        flex-grow: 1;
-        width: 30%;
-        min-width: 350px;
-        height: 100vh;
-        border-left: #ddd solid 1px;
-        margin-top:0px;
-        margin-bottom:0px;
       }
       .workspace {
         flex-grow: 8;

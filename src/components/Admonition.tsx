@@ -12,6 +12,7 @@ const stylings : AdmonitionStyles = {
     linkColor: "var(--high-hl-color)",
     hoverColor: "var(--high-cm-color)",
     icon: FaInfoCircle,
+    defaultTitle: "Info"
   },
   warn: {
     backgroundColor: "var(--main-al-color)",
@@ -19,6 +20,7 @@ const stylings : AdmonitionStyles = {
     linkColor: "var(--main-cm-color)",
     hoverColor: "var(--high-cm-color)",
     icon: IoMdWarning,
+    defaultTitle: "Warning"
   },
   action: {
     backgroundColor: "#eee",
@@ -26,6 +28,7 @@ const stylings : AdmonitionStyles = {
     linkColor: "var(--main-cm-color)",
     hoverColor: "var(--high-cm-color)",
     icon: FaKeyboard,
+    defaultTitle: "Action"
   },
   tip: {
     backgroundColor: "var(--main-hl-color)",
@@ -33,6 +36,7 @@ const stylings : AdmonitionStyles = {
     linkColor: "var(--main-cm-color)",
     hoverColor: "var(--high-cm-color)",
     icon: FaHandPointRight,
+    defaultTitle: "Tip"
   }
 }
 
@@ -83,7 +87,7 @@ export default function Admonition({ status = "info", children }: Props) {
 
   const getTitle = () : ReactNode | undefined => {
     //const t = children.find(c => (!isPrimitive(c)) && "props" in c && c.props.title)
-    const t = children.find(c => (isTitle(c)))
+    const t = (Array.isArray(children)) ? children.find(c => (isTitle(c))) : stylings[status].defaultTitle  
     if (t === undefined) return undefined
     
     return (!isPrimitive(t) && "props" in t) ? t.props.children : t
@@ -93,7 +97,7 @@ export default function Admonition({ status = "info", children }: Props) {
     <aside>
       <div className="container">
         {(getTitle() !== undefined) ? <Title>{getTitle()}</Title> : <></>}
-        {children.filter( c => !isTitle(c))}
+        {Array.isArray(children) ? children.filter( c => !isTitle(c)) : children}
       </div>
 
       <style jsx>{`

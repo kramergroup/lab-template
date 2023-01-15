@@ -4,6 +4,7 @@ export interface AdmonitionStyle {
     linkColor: string,
     hoverColor: string,
     icon: Function,
+    defaultTitle: string,
 }
 
 export interface AdmonitionStyles {
