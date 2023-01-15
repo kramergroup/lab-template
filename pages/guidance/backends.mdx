@@ -1,0 +1,32 @@
+# Backends
+
+Two options are available:
+
+- Wetty - a WebSocket-based terminal implementation
+- Guacamole - a WebSocket-based remote desktop application
+
+:::warn
+Both backends require setting up backing services and will not work "out-of-the-box".
+:::
+
+## Wetty
+
+Wetty is good for terminal-based labs and tutorials. It is fast and feature-rich. The user experience is very close
+to what working on a "real" terminal feels like. More info regarding setup can be found on the 
+[Wetty Developer Page](https://github.com/butlerx/wetty). In particular, Wetty can act as a bridge to systems that 
+are accessed through `ssh`. At the moment, Wetty does not support file transfer out of the box.
+
+The Wetty backend service can be configured in `app.config.js`:
+
+| parameter     | description                                     |
+| ------------- | ----------------------------------------------- |
+| `backendType` | set to `"wetty"`                                |
+| `backendURL`  | set to URL of backing service (i.e., wetty app) |
+
+:::info
+You do **not** configure the actual backend to work on (which you normally access through `ssh`) in the web app.
+This is done when setting up the Wetty service.
+:::
+
+The web app currently **does not** support authentication in any form. This is handled by Wetty, which presents 
+a login prompt if configured to use a remote ssh service.
