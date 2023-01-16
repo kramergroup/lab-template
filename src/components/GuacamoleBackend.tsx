@@ -33,9 +33,10 @@ const createToken = (width = 1024, height = 768) : string => {
 
 export interface GuacamoleBackendProps {
   backendURL: string,
+  resizeDelay?: number,
 }
 
-export default function GuacamoleBackend( {backendURL} : GuacamoleBackendProps) {
+export default function GuacamoleBackend( {backendURL, resizeDelay = 200} : GuacamoleBackendProps) {
 
     // reference to the Guacamole client
     const clientRef = useRef(null)
@@ -52,10 +53,10 @@ export default function GuacamoleBackend( {backendURL} : GuacamoleBackendProps) 
     // called once the containing div is mounted
     const displayRef = useCallback( node => {
       
-      const url = new URL(backendURL)
-      url.searchParams.set("token",createToken(node.clientWidth,node.clientHeight))
-
       if (node !== null) {
+
+        const url = new URL(backendURL)
+        url.searchParams.set("token",createToken(node.clientWidth,node.clientHeight))
 
         // Store ref to node
         windowRef.current = node
@@ -109,7 +110,7 @@ export default function GuacamoleBackend( {backendURL} : GuacamoleBackendProps) 
       // Timeout to 500 ms, so that size is updated 0.5 second after resize ends
       updateDisplaySizeTimerRef.current = setTimeout(() => {
           setSize(entry.contentRect)
-      }, 500)
+      }, resizeDelay)
     })
 
     // Ask server to resize if display size changes
