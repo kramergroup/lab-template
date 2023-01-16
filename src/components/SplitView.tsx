@@ -1,8 +1,12 @@
 import { ReactNode, useState } from "react"
 
+
 import GuidePane from "./GuidePane"
 import ToggleViewButton from "./ViewToggleButton"
+
 import WettyBackend from "./WettyBackend"
+import GuacamoleBackend from "./GuacamoleBackend"
+import GuacViewer from "./GuacViewer"
 
 export type BackendType = "wetty" | "guacamole"
 
@@ -18,7 +22,8 @@ export default function SplitView( {children, backendType, backendURL, showGuida
 
   const Backend = () => {
     if (backendType === "wetty") return <WettyBackend backendURL={backendURL} />
-    if (backendType === "guacamole") return <div id="workspace">Not implemented yet</div>
+    // if (backendType === "guacamole") return <GuacViewer backendURL={backendURL} />
+    if (backendType === "guacamole") return <GuacamoleBackend backendURL={backendURL} />
     return <></>
   }
 
@@ -70,9 +75,10 @@ export default function SplitView( {children, backendType, backendURL, showGuida
         flex-grow: 8;
         background: #ddd;
         height: 100vh;
+        width: 70%;
         overflow: hidden;
-        padding: 1ex;
-        background: black;
+        padding: 0ex;
+        background: transparent;
       }
     `}</style>
   </main>

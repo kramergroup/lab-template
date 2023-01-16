@@ -16,6 +16,8 @@ export default function WettyBackend( { backendURL } : WettyBackendProps ) {
           width: 100%;
           height: 100%;
           border: none;
+          background: black;
+          padding: 1ex;
         }
       `}</style>
       xw

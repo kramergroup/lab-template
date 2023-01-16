@@ -52,6 +52,10 @@ function GuidePane({children} : GuidePaneProps) {
           padding-left: 1em;
           padding-right: 1em;
         }
+        .content > table {
+          margin-top: 1em;
+          margin-bottom: 1em;
+        }
         `}</style>
 
       </div>

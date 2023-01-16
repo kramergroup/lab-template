@@ -7,8 +7,12 @@
 
 export default {
   
-  backendType: "wetty",
-  backendURL: "https://assets.kramer.science/compdes/wetty", 
+  // backendType: "wetty",
+  // backendURL: "https://assets.kramer.science/compdes/wetty", 
+
+  backendType: "guacamole",
+  backendURL: "ws://localhost:8080",
+  backendToken: "MySuperSecretKeyForParamsToken12",
 
   title: "Go-along tutorial template",
   greeting: "Welcome to My tutorial",

@@ -20,7 +20,7 @@ class Lab extends Component {
     return (
       <div className="container">
 
-        <SplitView backendURL={config.backendURL} backendType="wetty">
+        <SplitView backendURL={config.backendURL} backendType={config.backendType}>
           <Test/>
           <Welcome/>
           <Features/>
