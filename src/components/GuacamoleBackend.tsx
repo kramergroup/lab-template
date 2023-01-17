@@ -5,6 +5,8 @@ import useResizeObserver from '@react-hook/resize-observer'
 
 import encrypt from '../util/encryptToken'
 
+import clipboard from 'clipboardy';
+
 const createToken = (width = 1024, height = 768) : string => {
 
   const token = {
@@ -144,7 +146,8 @@ export default function GuacamoleBackend( {backendURL, resizeDelay = 200} : Guac
                 // which hapens often in SSH session
                 if (serverClipboard.trim() !== "") {
                     // put data received form server to client's clipboard
-                    navigator.clipboard.writeText(serverClipboard);
+                    clipboard.writeSync(serverClipboard)
+                    //navigator.clipboard.writeText(serverClipboard);
                 }
             }
         } else {
@@ -154,19 +157,21 @@ export default function GuacamoleBackend( {backendURL, resizeDelay = 200} : Guac
     };
 
     // Read client's clipboard
-    const onFocusHandler = () => {
+    const onFocusHandler = async () => {
+
+        //if (navigator === undefined || navigator.clipboard === undefined || navigator.clipboard.readText === undefined) return
+
         // when focused, read client clipboard text
-        navigator.clipboard.readText().then(
-            (cb) => {
-              console.log(cb)
-              let stream = clientRef.current.createClipboardStream("text/plain", "clipboard") as Guacamole.OutputStream;
-              setTimeout(() => {
-                  // remove '\r', because on pasting it becomes two new lines (\r\n -> \n\n)
-                  let buf = Buffer.from(cb.replace(/[\r]+/gm, ""))
-                  stream.sendBlob(buf.toString('base64'));
-              }, 200)
-            }
-        )
+        let cb = await clipboard.read()
+        
+        console.log(cb)
+        let stream = clientRef.current.createClipboardStream("text/plain", "clipboard") as Guacamole.OutputStream;
+        setTimeout(() => {
+            // remove '\r', because on pasting it becomes two new lines (\r\n -> \n\n)
+            let buf = Buffer.from(cb.replace(/[\r]+/gm, ""))
+            stream.sendBlob(buf.toString('base64'));
+        }, 200)
+      
     };
 
     // add handler only when navigator clipboard is available
