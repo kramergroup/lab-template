@@ -39,19 +39,19 @@ export interface GuacamoleBackendProps {
 export default function GuacamoleBackend( {backendURL, resizeDelay = 200} : GuacamoleBackendProps) {
 
     // reference to the Guacamole client
-    const clientRef = useRef(null)
+    const clientRef = useRef<Guacamole.Client>(null)
 
     // size of the containing div (updated via useResizeObserver)
     const [size, setSize] = useState<DOMRect>()
 
     // reference to the containing div 
-    const windowRef = useRef(null)
+    const windowRef = useRef<HTMLDivElement>(null)
 
     // Timer which controls timeot for display size update
     const updateDisplaySizeTimerRef = useRef<NodeJS.Timeout>()
 
     // called once the containing div is mounted
-    const displayRef = useCallback( node => {
+    const initDisplay = useCallback( (node : HTMLDivElement) => {
       
       if (node !== null) {
 
@@ -72,10 +72,6 @@ export default function GuacamoleBackend( {backendURL, resizeDelay = 200} : Guac
         // Bind mouse events
         const mouse = new Guacamole.Mouse(client.getDisplay().getElement());
         mouse.onmousemove = (mouseState) => {
-          if (navigator.userAgent.indexOf('Firefox') === -1) {
-            mouseState.x = mouseState.x + 125;
-            mouseState.y = mouseState.y + 65;
-          }
           client.sendMouseState(mouseState);
         }
         mouse.onmousedown = mouse.onmouseup = function (mouseState) {
@@ -94,14 +90,20 @@ export default function GuacamoleBackend( {backendURL, resizeDelay = 200} : Guac
 
     }, [])
 
-    // Observe size changes
+    // This effect scales the remote desktop when the containing div changes size
+    // @TODO Server-side scaling of the viewport is not supported yet
     useResizeObserver(windowRef, (entry) => {
 
       // Ignore sub-pixel changes
       if (size && (Math.abs(size.width - entry.contentRect.width) < 1 && Math.abs(size.height - entry.contentRect.height) < 1)) {
         return
       } 
+      setSize(entry.contentRect)
+    })
 
+    // Ask server to resize if display size changes
+    useEffect( () => {
+      
       // If we have resize scheduled - cancel it, because we received new insructions
       if (updateDisplaySizeTimerRef.current) {
         clearTimeout(updateDisplaySizeTimerRef.current);
@@ -109,13 +111,9 @@ export default function GuacamoleBackend( {backendURL, resizeDelay = 200} : Guac
 
       // Timeout to 500 ms, so that size is updated 0.5 second after resize ends
       updateDisplaySizeTimerRef.current = setTimeout(() => {
-          setSize(entry.contentRect)
-      }, resizeDelay)
-    })
-
-    // Ask server to resize if display size changes
-    useEffect( () => {
         if (size) clientRef.current.sendSize(size.width, size.height);
+      }, resizeDelay)
+        
     }, [size])
 
     useEffect(() => {
@@ -127,9 +125,58 @@ export default function GuacamoleBackend( {backendURL, resizeDelay = 200} : Guac
             console.log("Guacamole client disconnected")
           } 
       }
-  }, [])
+    }, [])
 
-  return <div ref={displayRef} className="display">
+   // This effect manages subscribing to clipboard events to manage clipboard synchronization
+   useEffect(() => {
+
+    const handleServerClipboardChange = (stream, mimetype) => {
+        // don't do anything if this is not active element
+        if (document.activeElement !== windowRef.current)
+            return;
+
+        if (mimetype === "text/plain") {
+            // stream.onblob = (data) => copyToClipboard(atob(data));
+            stream.onblob = (data) => { 
+                let serverClipboard = atob(data);
+                // we don't want action if our knowledge of server cliboard is unchanged
+                // and also don't want to fire if we just selected several space character accidentaly
+                // which hapens often in SSH session
+                if (serverClipboard.trim() !== "") {
+                    // put data received form server to client's clipboard
+                    navigator.clipboard.writeText(serverClipboard);
+                }
+            }
+        } else {
+            // Haven't seen those yet...
+            console.log("Unsupported mime type:" + mimetype)
+        }
+    };
+
+    // Read client's clipboard
+    const onFocusHandler = () => {
+        // when focused, read client clipboard text
+        navigator.clipboard.readText().then(
+            (clientClipboard) => {
+                let stream = clientRef.current.createClipboardStream("text/plain", "clipboard") as Guacamole.OutputStream;
+                setTimeout(() => {
+                    // remove '\r', because on pasting it becomes two new lines (\r\n -> \n\n)
+                    stream.sendBlob(btoa(unescape(encodeURIComponent(clientClipboard.replace(/[\r]+/gm, "")))));
+                }, 200)
+            }
+        )
+    };
+
+    // add handler only when navigator clipboard is available
+    if (navigator.clipboard) {
+        windowRef.current.addEventListener("focus", onFocusHandler);
+        clientRef.current.onclipboard = handleServerClipboardChange;
+    }
+  }, []);
+
+  // Passing a callback as ref to ensure div is mounted
+  // initDisplay 
+  return <div ref={initDisplay} className="display">
     <style jsx>{`
       div.display {
         width: 100%;
