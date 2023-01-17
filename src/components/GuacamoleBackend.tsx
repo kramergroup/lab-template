@@ -1,5 +1,5 @@
 import Guacamole from 'guacamole-common-js'
-import { useRef, useEffect, useCallback,useLayoutEffect, useState } from 'react'
+import { useRef, useEffect, useCallback,useLayoutEffect, useState, FocusEventHandler } from 'react'
 
 import useResizeObserver from '@react-hook/resize-observer'
 
@@ -25,7 +25,6 @@ const createToken = (width = 1024, height = 768) : string => {
       }
     }  
   } 
-  console.log(token)
 
   return encrypt(token)
 
@@ -130,15 +129,16 @@ export default function GuacamoleBackend( {backendURL, resizeDelay = 200} : Guac
    // This effect manages subscribing to clipboard events to manage clipboard synchronization
    useEffect(() => {
 
-    const handleServerClipboardChange = (stream, mimetype) => {
+    const handleServerClipboardChange = (stream : Guacamole.InputStream, mimetype : string) => {
         // don't do anything if this is not active element
         if (document.activeElement !== windowRef.current)
             return;
 
         if (mimetype === "text/plain") {
             // stream.onblob = (data) => copyToClipboard(atob(data));
-            stream.onblob = (data) => { 
-                let serverClipboard = atob(data);
+            stream.onblob = (data) => {
+                let buf = Buffer.from(data,'base64') 
+                let serverClipboard = buf.toString();
                 // we don't want action if our knowledge of server cliboard is unchanged
                 // and also don't want to fire if we just selected several space character accidentaly
                 // which hapens often in SSH session
@@ -157,12 +157,14 @@ export default function GuacamoleBackend( {backendURL, resizeDelay = 200} : Guac
     const onFocusHandler = () => {
         // when focused, read client clipboard text
         navigator.clipboard.readText().then(
-            (clientClipboard) => {
-                let stream = clientRef.current.createClipboardStream("text/plain", "clipboard") as Guacamole.OutputStream;
-                setTimeout(() => {
-                    // remove '\r', because on pasting it becomes two new lines (\r\n -> \n\n)
-                    stream.sendBlob(btoa(unescape(encodeURIComponent(clientClipboard.replace(/[\r]+/gm, "")))));
-                }, 200)
+            (cb) => {
+              console.log(cb)
+              let stream = clientRef.current.createClipboardStream("text/plain", "clipboard") as Guacamole.OutputStream;
+              setTimeout(() => {
+                  // remove '\r', because on pasting it becomes two new lines (\r\n -> \n\n)
+                  let buf = Buffer.from(cb.replace(/[\r]+/gm, ""))
+                  stream.sendBlob(buf.toString('base64'));
+              }, 200)
             }
         )
     };
@@ -171,12 +173,21 @@ export default function GuacamoleBackend( {backendURL, resizeDelay = 200} : Guac
     if (navigator.clipboard) {
         windowRef.current.addEventListener("focus", onFocusHandler);
         clientRef.current.onclipboard = handleServerClipboardChange;
+        console.log(windowRef.current)
+    } else {
+      console.warn("clipboard linking not supported")
     }
-  }, []);
+  }, [clientRef,windowRef]);
+
+   // Focuses Guacamole Client Display element if it's parent element has been clicked,
+    // because div with GuacamoleClient inside otherwise does not focus.
+    const parentOnClickHandler = () => {
+        windowRef.current.focus();
+    };
 
   // Passing a callback as ref to ensure div is mounted
   // initDisplay 
-  return <div ref={initDisplay} className="display">
+  return <div ref={initDisplay} className="display" tabIndex={1} onClick={parentOnClickHandler}>
     <style jsx>{`
       div.display {
         width: 100%;
@@ -184,6 +195,10 @@ export default function GuacamoleBackend( {backendURL, resizeDelay = 200} : Guac
         padding: 0px;
         overflow: hidden;
         cursor: none;
+        z-index: 2:
+      }
+      div.display:focus {
+        outline: none;
       }
     `}</style>
   </div>
