@@ -7,6 +7,8 @@ import encrypt from '../util/encryptToken'
 
 import clipboard from 'clipboardy';
 
+import {Button, Divider, CircularProgress,Backdrop} from '@mui/material'
+
 const createToken = (width = 1024, height = 768) : string => {
 
   const token = {
@@ -32,12 +34,22 @@ const createToken = (width = 1024, height = 768) : string => {
 
 }
 
+const GUACAMOLE_CLIENT_STATES = {
+  STATE_IDLE: 0,
+  STATE_CONNECTING: 1,
+  STATE_WAITING: 2,
+  STATE_CONNECTED: 3,
+  STATE_DISCONNECTING: 4,
+  STATE_DISCONNECTED: 5
+};
+
 export interface GuacamoleBackendProps {
   backendURL: string,
   resizeDelay?: number,
+  onStateChange?: (number) => void,
 }
 
-export default function GuacamoleBackend( {backendURL, resizeDelay = 200} : GuacamoleBackendProps) {
+export default function GuacamoleBackend( {backendURL, resizeDelay = 200, onStateChange} : GuacamoleBackendProps) {
 
     // reference to the Guacamole client
     const clientRef = useRef<Guacamole.Client>(null)
@@ -50,6 +62,9 @@ export default function GuacamoleBackend( {backendURL, resizeDelay = 200} : Guac
 
     // Timer which controls timeot for display size update
     const updateDisplaySizeTimerRef = useRef<NodeJS.Timeout>()
+
+    // State of the Guacamole session
+    const [clientState, setClientState] = useState(0);
 
     // called once the containing div is mounted
     const initDisplay = useCallback( (node : HTMLDivElement) => {
@@ -77,7 +92,7 @@ export default function GuacamoleBackend( {backendURL, resizeDelay = 200} : Guac
         }
         mouse.onmousedown = mouse.onmouseup = function (mouseState) {
           client.sendMouseState(mouseState);
-      };
+        };
     
         // Bind keyboard events
         const keyboard = new Guacamole.Keyboard(document);
@@ -86,6 +101,12 @@ export default function GuacamoleBackend( {backendURL, resizeDelay = 200} : Guac
 
          // Error handler
         client.onerror = (error) => console.log(error.message);
+
+        // Update state, component knows when to render faders, "Loading..." and so on
+        client.onstatechange = (newState) => {
+          setClientState(newState);
+          if (onStateChange) onStateChange(newState)
+        }
 
       }
 
@@ -192,20 +213,36 @@ export default function GuacamoleBackend( {backendURL, resizeDelay = 200} : Guac
 
   // Passing a callback as ref to ensure div is mounted
   // initDisplay 
-  return <div ref={initDisplay} className="display" tabIndex={1} onClick={parentOnClickHandler}>
-    <style jsx>{`
-      div.display {
-        width: 100%;
-        height: 100%;
-        padding: 0px;
-        overflow: hidden;
-        cursor: none;
-        z-index: 2:
-      }
-      div.display:focus {
-        outline: none;
-      }
-    `}</style>
-  </div>
+  return (
+    <div ref={initDisplay} className="display" tabIndex={1} onClick={parentOnClickHandler}>
 
+      <Backdrop
+          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={clientState < GUACAMOLE_CLIENT_STATES.STATE_CONNECTED}
+          style={{position: "absolute"}}>
+          <CircularProgress/>
+          <span className="statustext">Connecting</span>
+      </Backdrop>
+
+      <style jsx>{`
+        div.display {
+          width: 100%;
+          height: 100%;
+          padding: 0px;
+          overflow: hidden;
+          cursor: none;
+          z-index: 2;
+          position: relative;
+        }
+        div.display:focus {
+          outline: none;
+        }
+        span.statustext {
+          font-size: 24px;
+          padding-left: 1em;
+          padding-right: 1em;
+        }
+      `}</style>
+    </div>
+  )
 }
