@@ -220,8 +220,21 @@ export default function GuacamoleBackend( {backendURL, resizeDelay = 200, onStat
           sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
           open={clientState < GUACAMOLE_CLIENT_STATES.STATE_CONNECTED}
           style={{position: "absolute"}}>
-          <CircularProgress/>
-          <span className="statustext">Connecting</span>
+          <CircularProgress/><span className="statustext">Connecting</span>
+      </Backdrop>
+
+      <Backdrop
+          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={clientState > GUACAMOLE_CLIENT_STATES.STATE_CONNECTED}
+          style={{position: "absolute"}}>
+          <CircularProgress /><span className="statustext">Session disconnected</span>
+          {/* {errorMessage &&
+          <span style={{color: "red"}}>Error: {errorMessage}</span>}
+          <Divider/>
+
+          <Button inverted color='green' onClick={reconnect}>
+              Reconnect
+          </Button> */}
       </Backdrop>
 
       <style jsx>{`
