@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 
 import appConfig from '../../app.config';
 import crypto from 'crypto'
+import { LocalLaundryService } from '@mui/icons-material';
 
 const clientOptions = {
   cypher: 'AES-256-CBC',
@@ -13,12 +14,9 @@ interface Data {
   value: string,
 }
 
-
-
-
 export function useLocalStorage<T>(key: string, fallbackValue: T, encrypted: boolean = false) {
   
-  const encrypt = (value : T) : string => {
+  const encrypt = (value : T) : Data => {
 
     const iv = crypto.randomBytes(16);
     const cipher = crypto.createCipheriv(clientOptions.cypher, clientOptions.key, iv);
@@ -31,16 +29,15 @@ export function useLocalStorage<T>(key: string, fallbackValue: T, encrypted: boo
         value: crypted
     };
   
-    return Buffer.from(JSON.stringify(data)).toString('base64');
+    return data;
   };
   
-  const deencrypt = (value : string) : T => {
+  const deencrypt = (data : Data) : T => {
   
-    const data = JSON.parse(value) as Data;
-  
+    console.log(data)
     const decipher = crypto.createDecipheriv(clientOptions.cypher, clientOptions.key, Buffer.from(data.iv,'base64'));
   
-    let decryptedData = decipher.update(data.value, "base64", "utf-8");
+    let decryptedData = decipher.update(data.value, "base64", "utf8");
     decryptedData += decipher.final("utf8");
   
     return JSON.parse(decryptedData) as T;
@@ -49,15 +46,17 @@ export function useLocalStorage<T>(key: string, fallbackValue: T, encrypted: boo
   const encryptValue = (value) => (encrypted) ? encrypt(value) : value
   const deencryptValue = (value) => (encrypted) ? deencrypt(value) : value
 
-  const [value, setValue] = useState(encryptValue(fallbackValue));
+  const [value, setValue] = useState(fallbackValue);
   
   useEffect(() => {
-      const stored = deencryptValue(localStorage.getItem(key));
-      setValue(stored ? JSON.parse(stored) : fallbackValue);
+    const payload = JSON.parse(localStorage.getItem(key))
+    setValue(payload ? deencryptValue(payload) : fallbackValue);
   }, [fallbackValue, key,encrypted]);
 
   useEffect(() => {
-      localStorage.setItem(key, JSON.stringify(value));
+    (value === undefined) ? 
+      localStorage.removeItem("key") :
+      localStorage.setItem(key, JSON.stringify(encryptValue(value)));
   }, [key, value]);
 
   return [value, setValue] as const;

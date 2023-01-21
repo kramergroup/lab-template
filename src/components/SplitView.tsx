@@ -34,7 +34,7 @@ export default function SplitView( {children, backendType, backendURL, showGuida
 
   // const [credentials,setCredentials] = useLocalStorage<{username:string,password:string}>('credentials',{username: undefined, password: undefined})
 
-  const [username,setUsername] = useState<string>('')
+  const [username,setUsername] = useLocalStorage<string>("auth-token",undefined,true)
   
 
   const Backend = () => {
