@@ -1,5 +1,5 @@
 import Guacamole from 'guacamole-common-js'
-import { useRef, useEffect, useCallback,useLayoutEffect, useState, FocusEventHandler } from 'react'
+import { useRef, useEffect, useCallback,useLayoutEffect, useState } from 'react'
 
 import useResizeObserver from '@react-hook/resize-observer'
 
@@ -9,15 +9,18 @@ import clipboard from 'clipboardy';
 
 import {Button, Divider, CircularProgress,Backdrop} from '@mui/material'
 
-const createToken = (width = 1024, height = 768) : string => {
+import { ConnectionSetting } from '../util/users';
+
+
+const createToken = (width = 1024, height = 768, connectionSettings : ConnectionSetting) : string => {
 
   const token = {
     "connection": {
       "type": "rdp",
       "settings": {
-        "hostname": "172.28.1.215",
-        "username": "group01",
-        "password": "group01",
+        "hostname": connectionSettings.host,
+        "username": connectionSettings.username,
+        "password": connectionSettings.password,
         "enable-drive": false,
         "create-drive-path": false,
         "security": "any",
@@ -47,9 +50,10 @@ export interface GuacamoleBackendProps {
   backendURL: string,
   resizeDelay?: number,
   onStateChange?: (number) => void,
+  connectionSettings: ConnectionSetting
 }
 
-export default function GuacamoleBackend( {backendURL, resizeDelay = 200, onStateChange} : GuacamoleBackendProps) {
+export default function GuacamoleBackend( {backendURL, resizeDelay = 200, onStateChange, connectionSettings} : GuacamoleBackendProps) {
 
     // reference to the Guacamole client
     const clientRef = useRef<Guacamole.Client>(null)
@@ -72,7 +76,7 @@ export default function GuacamoleBackend( {backendURL, resizeDelay = 200, onStat
       if (node !== null) {
 
         const url = new URL(backendURL)
-        url.searchParams.set("token",createToken(node.clientWidth,node.clientHeight))
+        url.searchParams.set("token",createToken(node.clientWidth,node.clientHeight, connectionSettings))
 
         // Store ref to node
         windowRef.current = node
@@ -196,7 +200,8 @@ export default function GuacamoleBackend( {backendURL, resizeDelay = 200, onStat
     };
 
     // add handler only when navigator clipboard is available
-    if (navigator.clipboard) {
+    // The clipboard API is only available in secure contexts
+    if (window.isSecureContext && navigator.clipboard) {
         windowRef.current.addEventListener("focus", onFocusHandler);
         clientRef.current.onclipboard = handleServerClipboardChange;
         console.log(windowRef.current)
@@ -205,11 +210,15 @@ export default function GuacamoleBackend( {backendURL, resizeDelay = 200, onStat
     }
   }, [clientRef,windowRef]);
 
-   // Focuses Guacamole Client Display element if it's parent element has been clicked,
-    // because div with GuacamoleClient inside otherwise does not focus.
-    const parentOnClickHandler = () => {
-        windowRef.current.focus();
-    };
+  // Focuses Guacamole Client Display element if it's parent element has been clicked,
+  // because div with GuacamoleClient inside otherwise does not focus.
+  const parentOnClickHandler = () => {
+      windowRef.current.focus();
+  };
+
+  const reconnect = () => {
+    clientRef.current.connect()
+  }
 
   // Passing a callback as ref to ensure div is mounted
   // initDisplay 
@@ -229,12 +238,12 @@ export default function GuacamoleBackend( {backendURL, resizeDelay = 200, onStat
           style={{position: "absolute"}}>
           <CircularProgress /><span className="statustext">Session disconnected</span>
           {/* {errorMessage &&
-          <span style={{color: "red"}}>Error: {errorMessage}</span>}
+          <span style={{color: "red"}}>Error: {errorMessage}</span>}*/}
           <Divider/>
 
-          <Button inverted color='green' onClick={reconnect}>
+          <Button variant="contained" color="primary" onClick={reconnect}>
               Reconnect
-          </Button> */}
+          </Button> 
       </Backdrop>
 
       <style jsx>{`
@@ -243,7 +252,7 @@ export default function GuacamoleBackend( {backendURL, resizeDelay = 200, onStat
           height: 100%;
           padding: 0px;
           overflow: hidden;
-          cursor: none;
+          cursor: ${(clientState === GUACAMOLE_CLIENT_STATES.STATE_CONNECTED) ? 'none' : 'inherited'};
           z-index: 2;
           position: relative;
         }

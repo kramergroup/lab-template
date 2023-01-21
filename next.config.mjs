@@ -55,4 +55,17 @@ export default  withMDX({
     publicRuntimeConfig: {
       basePath: getBasePath(),
     },
+    webpack: (config, { buildId, dev, isServer, defaultLoaders, nextRuntime, webpack } ) => {
+        
+      config.module.rules.push(
+          {
+            test: /\.ya?ml$/,
+            type: "json",
+            use: 'js-yaml-loader',
+          },
+        )
+        
+        // Important: return the modified config
+        return config
+      },
   })

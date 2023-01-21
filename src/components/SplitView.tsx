@@ -1,5 +1,7 @@
-import { ReactNode, useState } from "react"
+import { ReactNode, useState, useRef } from "react"
 
+import { styled } from '@mui/material/styles'
+import { Box } from '@mui/material'
 
 import GuidePane from "./GuidePane"
 import ToggleViewButton from "./ViewToggleButton"
@@ -8,22 +10,37 @@ import WettyBackend from "./WettyBackend"
 import GuacamoleBackend from "./GuacamoleBackend"
 import GuacViewer from "./GuacViewer"
 
+import LoginWindow from "./LoginWindow"
+import { useLocalStorage } from "../util/useLocalStorage"
+import { authenticateUser,getConnectionSettings } from "../util/users"
+
 export type BackendType = "wetty" | "guacamole"
 
+const LoginContainer = styled(Box)`
+position: relative;
+width: 100%;
+height: 100%;
+`
 export interface SplitViewProps {
 
   showGuidance?: boolean,
   children?: ReactNode[],
   backendType: BackendType,
   backendURL: string,
+
 }
 
 export default function SplitView( {children, backendType, backendURL, showGuidance = true} : SplitViewProps) {
 
+  // const [credentials,setCredentials] = useLocalStorage<{username:string,password:string}>('credentials',{username: undefined, password: undefined})
+
+  const [username,setUsername] = useState<string>('')
+  
+
   const Backend = () => {
     if (backendType === "wetty") return <WettyBackend backendURL={backendURL} />
     // if (backendType === "guacamole") return <GuacViewer backendURL={backendURL} />
-    if (backendType === "guacamole") return <GuacamoleBackend backendURL={backendURL} />
+    if (backendType === "guacamole") return <GuacamoleBackend backendURL={backendURL} connectionSettings={getConnectionSettings(username)}/>
     return <></>
   }
 
@@ -55,11 +72,23 @@ export default function SplitView( {children, backendType, backendURL, showGuida
     )
   }
 
+  const handleLogin = (username:string, password: string) => {
+
+    if ( authenticateUser(username,password) ) {
+      setUsername(username)
+      return true
+    }
+    return false
+  }
+
   return (
   <main>
     
     <div className="workspace">
-      <Backend/>
+      {(username) ? <Backend/> : <LoginContainer>
+        <LoginWindow className="loginwindow"
+                     onLogin={handleLogin}/>
+        </LoginContainer>}
     </div>
     <Guide/>
 
@@ -80,6 +109,7 @@ export default function SplitView( {children, backendType, backendURL, showGuida
         padding: 0ex;
         background: transparent;
       }
+
     `}</style>
   </main>
   )
