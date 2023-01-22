@@ -189,7 +189,6 @@ export default function GuacamoleBackend( {backendURL, resizeDelay = 200, onStat
         // when focused, read client clipboard text
         let cb = await clipboard.read()
         
-        console.log(cb)
         let stream = clientRef.current.createClipboardStream("text/plain", "clipboard") as Guacamole.OutputStream;
         setTimeout(() => {
             // remove '\r', because on pasting it becomes two new lines (\r\n -> \n\n)
@@ -201,10 +200,9 @@ export default function GuacamoleBackend( {backendURL, resizeDelay = 200, onStat
 
     // add handler only when navigator clipboard is available
     // The clipboard API is only available in secure contexts
-    if (window.isSecureContext && navigator.clipboard) {
+    if (window.isSecureContext && navigator.clipboard && navigator.clipboard.readText) {
         windowRef.current.addEventListener("focus", onFocusHandler);
         clientRef.current.onclipboard = handleServerClipboardChange;
-        console.log(windowRef.current)
     } else {
       console.warn("clipboard linking not supported")
     }

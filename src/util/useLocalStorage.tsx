@@ -34,7 +34,6 @@ export function useLocalStorage<T>(key: string, fallbackValue: T, encrypted: boo
   
   const deencrypt = (data : Data) : T => {
   
-    console.log(data)
     const decipher = crypto.createDecipheriv(clientOptions.cypher, clientOptions.key, Buffer.from(data.iv,'base64'));
   
     let decryptedData = decipher.update(data.value, "base64", "utf8");
