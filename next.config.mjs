@@ -33,7 +33,7 @@ const withMDX = mdx({
  * then add it. 
  */
 function getBasePath() {
-  var basePath = ''
+  var basePath = '/'
 
   if (isProd && process.env.BASE_PATH){
       if (process.env.BASE_PATH.startsWith("/") ){
