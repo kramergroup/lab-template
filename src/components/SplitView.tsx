@@ -1,4 +1,4 @@
-import { ReactNode, useState, useRef } from "react"
+import { ReactNode, useState } from "react"
 
 import { styled } from '@mui/material/styles'
 import { Box } from '@mui/material'
@@ -8,7 +8,6 @@ import ToggleViewButton from "./ViewToggleButton"
 
 import WettyBackend from "./WettyBackend"
 import GuacamoleBackend from "./GuacamoleBackend"
-import GuacViewer from "./GuacViewer"
 
 import LoginWindow from "./LoginWindow"
 import { useLocalStorage } from "../util/useLocalStorage"

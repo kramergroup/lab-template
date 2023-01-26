@@ -1,6 +1,5 @@
 
-import { users } from "../../data/users.yaml"
-
+import { users } from "../../data/users.json"
 
 export interface ConnectionSetting {
   username: string,
