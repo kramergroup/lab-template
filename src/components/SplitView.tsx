@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react"
+import { ReactNode, useState, useRef } from "react"
 
 import { styled } from '@mui/material/styles'
 import { Box } from '@mui/material'
@@ -12,6 +12,8 @@ import GuacamoleBackend from "./GuacamoleBackend"
 import LoginWindow from "./LoginWindow"
 import { useLocalStorage } from "../util/useLocalStorage"
 import { authenticateUser,getConnectionSettings } from "../util/users"
+
+import useResizeObserver from '@react-hook/resize-observer'
 
 export type BackendType = "wetty" | "guacamole"
 
@@ -31,10 +33,22 @@ export interface SplitViewProps {
 
 export default function SplitView( {children, backendType, backendURL, showGuidance = true} : SplitViewProps) {
 
-  // const [credentials,setCredentials] = useLocalStorage<{username:string,password:string}>('credentials',{username: undefined, password: undefined})
-
   const [username,setUsername] = useLocalStorage<string>("auth-token",undefined,true)
   
+  // reference to the containing div 
+  const viewRef = useRef<HTMLDivElement>(null)
+
+  const [splitViewMode,setSplitViewMode] = useState<boolean>(true)
+  
+  // This effect scales the remote desktop when the containing div changes size
+  // @TODO Server-side scaling of the viewport is not supported yet
+  useResizeObserver(viewRef, (entry) => {
+
+    const screenAvailWidth = window.screen.availWidth;
+    const viewWidth = entry.contentRect.width;
+
+    setSplitViewMode(viewWidth >= screenAvailWidth / 3.0)
+  })
 
   const Backend = () => {
     if (backendType === "wetty") return <WettyBackend backendURL={backendURL} />
@@ -54,12 +68,12 @@ export default function SplitView( {children, backendType, backendURL, showGuida
           {children}
         </GuidePane>
       </div>
-      <ToggleViewButton splitView={guidanceVisible} onClick={() => setGuidanceVisible(!guidanceVisible)}/>
+      {splitViewMode && (<ToggleViewButton splitView={guidanceVisible} onClick={() => setGuidanceVisible(!guidanceVisible)}/>)}
 
       <style jsx>{`
         .guide {
           flex-grow: 1;
-          width: 30%;
+          width: ${(splitViewMode) ? '30%' : '100%'};
           min-width: 350px;
           height: 100vh;
           border-left: #ddd solid 1px;
@@ -81,9 +95,9 @@ export default function SplitView( {children, backendType, backendURL, showGuida
   }
 
   return (
-  <main>
+  <main ref={viewRef}>
     
-    <div className="workspace">
+    <div className="workspace" hidden={!splitViewMode}>
       {(username) ? <Backend/> : <LoginContainer>
         <LoginWindow className="loginwindow"
                      onLogin={handleLogin}/>
