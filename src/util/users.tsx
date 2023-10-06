@@ -1,5 +1,5 @@
 
-import { users } from "../../data/users.json"
+import data from "../../data/users.json"
 
 export interface ConnectionSetting {
   username: string,
@@ -9,7 +9,7 @@ export interface ConnectionSetting {
 
 export function authenticateUser(username : string, password : string) : boolean {
 
-  const user = users.find((u) => u.username === username)
+  const user = data.users.find((u) => u.username === username)
 
   if (user === undefined) return false
   if (user.password !== password) return false
@@ -19,7 +19,7 @@ export function authenticateUser(username : string, password : string) : boolean
 
 export function getConnectionSettings(username : string) : ConnectionSetting | undefined {
 
-  const user = users.find((u) => u.username === username)
+  const user = data.users.find((u) => u.username === username)
 
   return user
 }
