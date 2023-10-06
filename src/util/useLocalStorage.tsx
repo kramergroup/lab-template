@@ -48,8 +48,12 @@ export function useLocalStorage<T>(key: string, fallbackValue: T, encrypted: boo
   const [value, setValue] = useState(fallbackValue);
   
   useEffect(() => {
-    const payload = JSON.parse(localStorage.getItem(key))
-    setValue(payload ? deencryptValue(payload) : fallbackValue);
+    try {
+      const payload = JSON.parse(localStorage.getItem(key))
+      setValue(payload ? deencryptValue(payload) : fallbackValue);
+    } catch {
+      setValue(fallbackValue);
+    }
   }, [fallbackValue, key,encrypted]);
 
   useEffect(() => {
