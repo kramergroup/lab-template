@@ -18,6 +18,8 @@ For demonstation purposes, this repository provides a docker-compose environment
 docker-compose up
 ```
 
+The lab is then accessible through [http://localhost:3030](http://localhost:3030)
+
 The environment consists of three containers:
 
 | Container | Ports | Purpose                                                                                  |
@@ -38,6 +40,13 @@ First, run the development server:
 npm run dev
 # or
 yarn dev
+```
+
+If running in development mode for the first time, you will need to install the required
+modules with
+
+```bash
+yarn install
 ```
 
 Open [http://localhost:3000/lab](http://localhost:3000/lab) with your browser to see the result.
