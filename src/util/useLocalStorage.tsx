@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 
 import appConfig from '../../app.config';
 import crypto from 'crypto'
-import { LocalLaundryService } from '@mui/icons-material';
 
 const clientOptions = {
   cypher: 'AES-256-CBC',
