@@ -98,7 +98,7 @@ export default function SplitView( {children, backendType, backendURL, showGuida
   <main ref={viewRef}>
     
     <div className="workspace" hidden={!splitViewMode}>
-      {(username) ? <Backend/> : <LoginContainer>
+      {(username) || (backendType === "wetty") ? <Backend/> : <LoginContainer>
         <LoginWindow className="loginwindow"
                      onLogin={handleLogin}/>
         </LoginContainer>}
