@@ -30,5 +30,30 @@ You do **not** configure the actual backend to work on (which you normally acces
 This is done when setting up the Wetty service.
 :::
 
-The web app currently **does not** support authentication in any form. This is handled by Wetty, which presents 
-a login prompt if configured to use a remote ssh service.
+## Guacamole
+
+[Guacamole](https://guacamole.apache.org) is an Apache project that provides access 
+to remote computers via the web. It is essentially a bridge between RDP or VNC remote 
+access servers and a HTML5 canvas to act as 'display'.
+
+The Guacamole backend service can be configured in `app.config.js`:
+
+| parameter     | description                                     |
+| ------------- | ----------------------------------------------- |
+| `backendType` | set to `"guacamole"`                            |
+| `backendURL`  | set to URL of backing service (i.e., guacd app) |
+| `backendToken`| bearer token to authenticate with the guacd API |
+
+How to configure a Guacamole server is beyond the scope of this intro.
+
+## Other HTML backends
+
+In principle, it should be possible to use any HTML service (e.g. JupyterHub) as the 
+backend using the `wetty` backend type as long as displaying the webpage within 
+an `<iframe>` is allowed. For self-hosted services this might require configuring CORS 
+header. 
+
+:::warn
+Embedding Github will not work, because Github does not allow embedding of its
+webpages into `<iframes>`. This is also true for Github-based authentication. 
+:::
